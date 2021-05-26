@@ -4,10 +4,10 @@ from datetime import date
 import datetime
 
 
-""" settings.pyのTEMPLATES-->'OPTIONS'-->'context_processors'に'myapp.context_processors.関数名'のように記載して主にbase.html(継承元テンプレート)で利用する． """
+""" settings.pyのTEMPLATES-->'OPTIONS'-->'context_processors'に'myapp.context_processors.関数名'のように記載して主にbase.html(継承元テンプレート)とindex.htmlで利用する． """
 
 
-def Index(request):
+def Index(request): #index.htmlで利用する
     bbs = BBS.objects.all()
     registered_users = User.objects.all().count()
     index_context = {
