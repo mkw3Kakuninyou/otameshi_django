@@ -1,0 +1,36 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+{% if request.user.is_superuser %}
+<div class="row">
+    <div class="col-md-8 offset-md-1">
+        <br>
+        <h1>SEO設定</h1>
+        {% if not seo %}
+        <a class='btn btn-info' href="{% url 'myapp:seo_create' %}">SEOを作成する</a>
+        {% endif %}
+        <br>
+            <p><a class='btn btn-success' href="{% url 'myapp:seo_update' seo.id %}">編集</a></p>
+            <p>meta_keywords --> {{ seo.meta_keywords }}</p>
+            <p>meta_description --> {{ seo.meta_description }}</p>
+            <p>meta_prop_ogTitle --> {{ seo.meta_prop_ogTitle }}</p>
+            <p>meta_prop_ogImage --> {{ seo.meta_prop_ogImage }}</p>
+            <p>meta_prop_ogWidth --> {{ seo.meta_prop_ogWidth }}</p>
+            <p>meta_prop_ogHeight --> {{ seo.meta_prop_ogHeight }}</p>
+            <p>meta_prop_ogDescription --> {{ seo.meta_prop_ogDescription }}</p>
+            <p>meta_prop_ogSiteName --> {{ seo.meta_prop_ogSiteName }}</p>
+            <p>meta_prop_ogUrl --> {{ seo.meta_prop_ogUrl }}
+            <p>meta_twi_imgSrc --> {{ seo.meta_twi_imgSrc }}</p>
+            <p>meta_twi_title --> {{ seo.meta_twi_title }}</p>
+            <p>title --> {{ seo.page_title }}</p>
+        <br>
+        {% include 'myapp/pagination.html' %}
+        <br>
+    </div>
+</div>
+{% else %}
+<br>
+<p>この機能は管理ユーザー専用です．</p>
+<br>
+{% endif %}
+{% endblock %}

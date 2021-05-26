@@ -1,0 +1,32 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+{% if request.user == post.author %}
+<div class="row">
+    <div class="col-md-8 offset-md-1">
+        <br>
+        <h1>投稿削除</h1>
+        <br>
+        <div class="alert alert-danger" role="alert">
+            <form method="post">
+                {% csrf_token %}
+                <p>以下の内容を本当に削除しますか？</p>
+                <input type="submit" class="btn btn-danger" value="削除する">
+            </form>
+        </div>
+        <br>
+        <p>タイトル</p>
+        {{ object.title }}
+        <hr>
+        <p>内容</p>
+        {{ object.content }}
+        <br>
+        <br>
+    </div>
+</div>
+{% else %}
+<br>
+<p>このページは特定のユーザー専用です．</p>
+<br>
+{% endif %}
+{% endblock %}

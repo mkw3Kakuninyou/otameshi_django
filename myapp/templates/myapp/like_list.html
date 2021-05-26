@@ -1,0 +1,40 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-1">
+        <br>
+        <h1>お気に入り一覧</h1>
+        <br>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th width="150px">タイトル</th>
+                    <th width="150px">概要</th>
+                    <th width="200px">作成日時<br>更新日時</th>
+                    <th width="150px">リンク</th>
+                    <th width="150px">削除</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in like_list %}
+                <tr>
+                <!--LikeテーブルとPostテーブルのidカラムを一致させて，お気に入りのページへ移動する-->
+                    <td>{{ item.post }}</td>
+                    <!--以下のitem.post.content～はPostテーブルのカラムcontentを表示している-->
+                    <td>{{ item.post.description|safe|linebreaks|truncatechars_html:25 }}</td>
+                    <td>{{ item.post.created_at.date }}
+                        <br>
+                        {{ item.post.updated_at.date }}</td>
+                    <td><a class='btn btn-success' href="{% url 'myapp:post_detail' item.post.id %}">移動</a></td>
+                    <td><a class='btn btn-danger' href="{% url 'myapp:like_list_delete' item.pk %}">削除</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br>
+        {% include 'myapp/pagination.html' %}
+        <br>
+    </div>
+</div>
+{% endblock %}

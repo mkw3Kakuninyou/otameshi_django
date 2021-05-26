@@ -1,0 +1,26 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+{% if request.user.is_superuser %}
+<div class="row">
+    <div class="col-md-8 offset-md-1">
+        <br>
+        <h1>カテゴリの作成</h1>
+        <br>
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.as_p }}
+            </div>
+            <a href="/" onclick="window.history.back();" class="btn btn-outline-dark">戻る</a>
+            <button type="submit" class="btn btn-primary">保存</button>
+            <br><br>
+        </form>
+    </div>
+</div>
+{% else %}
+<br>
+<p>この機能は管理ユーザー専用です．</p>
+<br>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-1">
+        <br>    
+        <!-- Card -->
+        <div class="card">
+
+            <!-- Card image -->
+            {% if object.thumbnail %}
+            <img class="card-img-top" src="{{ object.thumbnail.url }}" alt="{{ object.title }}">
+            {% else %}
+            <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Others/images/43.jpg" alt="{{ object.title }}">
+            {% endif %}
+            <!-- Card content -->
+            <div class="card-body">
+        
+            <!-- Title -->
+            <h1 class="card-title">[{{ object.title }}]</h1>
+            <p class="card-title">(投稿者：{{ object.author }})</p>
+            <p class="card-title">(閲覧数：{{ views_count.views }})</p>
+            <hr>
+            <!-- Text -->
+            <p>(概要)</p>
+            <h2 class="card-text">{{ object.description|safe|linebreaks }}</h2>
+            <hr>
+            <p>(内容)</p>
+            <h3 class="card-text">{{ object.content|safe }}</h3>
+            <hr>
+            <!-- Button -->
+            {% if pk not in is_like or request.user.is_anonymous %}
+            <a class="btn" href="{% url 'myapp:like_add' object.pk %}" style="background-color:#FF6699; color:white;">お気に入りに登録する</a>
+            <hr>
+            {% else %}
+            <a class="btn" href="{% url 'myapp:like_add' object.pk %}" style="background-color:#00FF00; color:white;" pointer-events:none>お気に入りに登録済み</a>
+            <hr>
+            {% endif %}
+            <a href="/" onclick="window.history.back();" class="btn btn-outline-dark">戻る</a>
+            <hr>
+            <br>
+            {% with prev=object.get_previous_by_created_at %}
+            {% if prev %}
+                <a href="{% url 'myapp:post_detail' prev.pk %}" class="btn btn-secondary">前の記事</a>
+            {% endif %}
+            {% endwith %}
+            {% with next=object.get_next_by_created_at %}
+                {% if next %}
+                    <a href="{% url 'myapp:post_detail' next.pk %}" class="btn btn-success">次の記事</a>
+                {% endif %}
+            {% endwith %}
+            <hr>
+            <br>
+            {% if object.author == request.user %}
+            <a href="{% url 'myapp:post_update' object.pk %}" class="btn btn-primary">更新</a>
+            <a href="{% url 'myapp:post_delete' object.pk %}" class="btn btn-danger">削除</a>
+            {% endif %}
+        
+            </div>
+        
+        </div>
+        <!-- Card -->
+        <br>    
+    </div>
+    <div class="col-md-3">
+        <br>
+        <!-- Card -->
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ object.category }}</h5>
+                <p>このカテゴリの他の記事</p>
+            </div>
+            <ul class="list-group">
+                {% for item in category_posts %}
+                <li class="list-group-item"><a href="{% url 'myapp:post_detail' item.id %}">{{ item.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <!-- Card -->
+    </div>
+</div>
+{% endblock %}

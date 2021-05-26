@@ -1,0 +1,35 @@
+{% extends 'myapp/base.html' %}
+{% block content %}
+{% if request.user.is_superuser %}
+<div class="row">
+    <div class="col-md-8 offset-md-1">
+        <form method="POST">
+        {% csrf_token %}
+            <br><br>
+            <h1>以下の掲示を削除しますか？<button  class="btn btn-danger" type="submit" value="削除">削除する</button></h1>
+            <br>
+            <div class="row">
+            <div class="col-md-10">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th width='20px'>掲示id</th>
+                            <th width='200px'>掲示の内容</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ object.id }}</td>
+                            <td>{{ object.bbscontent }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+        </form>
+    </div>    
+</div>
+{% else %}
+<br>
+<p>このページは管理ユーザー専用です．</p>
+<br>
+{% endif %}
+{% endblock %}

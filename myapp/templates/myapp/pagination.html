@@ -1,0 +1,23 @@
+<div class="row">
+    <div class="offset-md-4">
+        <div class="pagination">
+            <span class="step-links">
+                <span class="current">
+                {% if page_obj.has_previous or page_obj.has_next %}
+                    ページ {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+                </span>
+                {% endif %}
+
+                {% if page_obj.has_previous %}
+                    <p><a href="?page=1">&laquo; 最初のページへ</a></P>
+                    <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-secondary">前のページへ</a>
+                {% endif %}
+                
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}" class="btn btn-success">次のページへ</a>
+                    <p><a href="?page={{ page_obj.paginator.num_pages }}">最後のページへ &raquo;</a></p>
+                {% endif %}
+            </span>
+        </div>
+    </div>
+</div>

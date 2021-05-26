@@ -1,0 +1,39 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-1">
+        <br>
+        <h1>新規投稿</h1>
+        <br>
+
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>タイトル(50文字以内)</label>
+                {{ form.title }}
+            </div>
+            <div class="form-group">
+                <label>概要(100文字以内)</label>
+                {{ form.description }}
+            </div>
+            <div class="form-group">
+                <label>カテゴリー</label>
+                {{ form.category }}
+            </div>
+            <div class="form-group">
+                <label>サムネイル画像</label>
+                {{ form.thumbnail }}
+            </div>
+            <br>
+            <div class="form-group">
+                <label>内容(10,000文字以内)</label>
+                {{ form.content }}
+            </div>
+            <a href="/" onclick="window.history.back();" class="btn btn-outline-dark">戻る</a>
+            <button type="submit" class="btn btn-primary">投稿</button>
+            <br><br>
+        </form>
+    </div>
+</div>
+{% endblock %}
