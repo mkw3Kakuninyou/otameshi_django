@@ -10,13 +10,16 @@
             <p>お客さん．こにゃにゃちわんこそば🐾</p>
         {% endif %}
         <br>
+        {% comment %} 「layout」はcontext_processors.pyのLayoutList関数の辞書型データのキーである． {% endcomment %}
         <h1 class="display-4">{{ layout.home_top_title }}</h1>
         <h2 class="display-8">{{ layout.home_sub_title }}</2>
     </div>
     <div class="container">
         <br>
         <p>本日は{{ today }}です．</p>
+        {% comment %} 「registered_users」はcontext_processors.pyのIndex関数の辞書型データのキーである． {% endcomment %}
         <p>ユーザー登録者数は{{ registered_users }}人です．</p>
+        {% comment %} 「bbs」はcontext_processors.pyのIndex関数の辞書型データのキーである． {% endcomment %}
         {% for item in bbs %}
             <p>💩{{ item.bbscontent }}</P>
         {% endfor %}
