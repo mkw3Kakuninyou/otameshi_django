@@ -18,10 +18,30 @@
         <p>本日は{{ today }}です．</p>
         <p>ユーザー登録者数は{{ registered_users }}人です．</p>
         {% for item in bbs %}
-            <p>○{{ item.bbscontent }}</P>
+            <p>💩{{ item.bbscontent }}</P>
         {% endfor %}
     </div>
 </div>
+
+
+<div class='row'>
+    <div class='col-md-9 offset-md-5'>
+        {% comment %} 参考)https://teratail.com/questions/339728 {% endcomment %}
+        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">並替</a>
+        <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+            <form action='' method='POST'>
+            {% csrf_token %}
+                <input type='submit' name='order' value='降順'></p>
+                <input type='submit' name='order' value='昇順'></p>
+                <input type='submit' name='order' value='カテゴリ'></p>
+                <input type='submit' name='order' value='投稿者'></p>
+            </form>
+        </div>
+    </div>
+<br>
+<div>    
+
 
 <div class="row">
     <div class="col-md-9">
@@ -59,8 +79,8 @@
                         <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
                         <a href="{% url 'myapp:post_detail' item.id %}" type="button" class="btn btn-light-blue btn-md">詳細へ</a>
                         <div class="card-footer text-muted text-center mt-4">
-                            <small>by&nbsp;{{ item.author }}&nbsp;<br>at {{ item.created_at.date }}<br>
-                            お気に入りへ登録した<br>ユーザー数</small>
+                            <small>by&nbsp;{{ item.author }}<br>💩投稿日{{ item.created_at.date }}<br>💩更新日{{ item.updated_at.date }}
+                            <br>💩お気に入りへ登録した<br>ユーザー数</small>
                             <br>
                             {% comment %} 「like_count」はmodels.pyのPostクラスのlike_countメソッドである． {% endcomment %}
                             <i class="fas fa-heart" style='color:pink;'></i>&nbsp;{{ item.like_count }}

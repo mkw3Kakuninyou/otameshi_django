@@ -16,13 +16,23 @@ from django.shortcuts import render, get_object_or_404
 import os
 
 
-class PostIndex(ListView):
-    model = Post
-    template_name = os.path.join('myapp', 'index.html')
-    paginate_by = 6
+def PostIndex(request):
+    if request.POST.get('order')=='降順':
+        post_list = Post.objects.all().order_by('-created_at')
+    elif request.POST.get('order')=='昇順':
+        post_list = Post.objects.all().order_by('created_at')
+    elif request.POST.get('order')=='カテゴリ':
+        post_list = Post.objects.all().order_by('category')
+    elif request.POST.get('order')=='投稿者':
+        post_list = Post.objects.all().order_by('author')
+    else:
+        post_list = Post.objects.all().order_by('-created_at')
+
+    context = {
+        'post_list': post_list,
+    }
     
-    def get_queryset(self):
-        return Post.objects.all().order_by('-created_at')
+    return render(request, 'myapp/index.html', context)
     
 
 class PostCreate(LoginRequiredMixin, CreateView):

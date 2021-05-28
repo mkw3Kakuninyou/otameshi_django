@@ -4,7 +4,7 @@ from .models import Post, Like, Category, BBS, SEO, Layout
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('id', 'author', 'description', 'title', 'created_at')
+    list_display = ('id', 'title', 'author', 'description', 'category', 'created_at', 'updated_at')
     list_display_links = ('id',)
     ordering = ('-created_at',)
     
