@@ -11,35 +11,34 @@ from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-""" from django.core.paginator import Paginator """
+from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 import os
 
 
-class PostIndex(ListView):
-    model = Post
-    template_name = os.path.join('myapp','index.html')
-    paginate_by = 6
-
-    def get_queryset(self):
-        if self.request.POST.get('order')=='投稿日-新しい順':
-            post_list = Post.objects.all().order_by('-created_at')
-        elif self.request.POST.get('order')=='投稿日-古い順':
-            post_list = Post.objects.all().order_by('created_at')
-        elif self.request.POST.get('order')=='更新日-新しい順':
-            post_list = Post.objects.all().order_by('-updated_at')
-        elif self.request.POST.get('order')=='更新日-古い順':
-            post_list = Post.objects.all().order_by('updated_at')
-        elif self.request.POST.get('order')=='カテゴリごと':
-            post_list = Post.objects.all().order_by('category')
-        elif self.request.POST.get('order')=='投稿者ごと':
-            post_list = Post.objects.all().order_by('author')
-        else:
-            post_list = Post.objects.all().order_by('-created_at')
-        
-        return post_list
+#参考)https://djangobrothers.com/blogs/django_pagination/
+def PostIndex(request):
+    if request.POST.get('order')=='投稿日-新しい順':
+        post_list = Post.objects.all().order_by('-created_at')
+    elif request.POST.get('order')=='投稿日-古い順':
+        post_list = Post.objects.all().order_by('created_at')
+    elif request.POST.get('order')=='更新日-新しい順':
+        post_list = Post.objects.all().order_by('-updated_at')
+    elif request.POST.get('order')=='更新日-古い順':
+        post_list = Post.objects.all().order_by('updated_at')
+    elif request.POST.get('order')=='カテゴリごと':
+        post_list = Post.objects.all().order_by('category')
+    elif request.POST.get('order')=='投稿者ごと':
+        post_list = Post.objects.all().order_by('author')
+    else:
+        post_list = Post.objects.all().order_by('-created_at')
     
-
+    paginator = Paginator(post_list, 6)
+    p = request.GET.get('page')
+    post_list = paginator.get_page(p)
+    return render(request, 'myapp/index.html', {'page_obj': post_list}) #Keyの「page_obj」はpagination.html(どこかのサイトからお借りしたもの)に対応するようにしている．
+    
+    
 class PostCreate(LoginRequiredMixin, CreateView):
     model = Post
     form_class = PostForm

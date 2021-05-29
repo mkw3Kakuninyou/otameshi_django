@@ -4,7 +4,7 @@ from . import views
 app_name = 'myapp'
 
 urlpatterns = [
-    path('', views.PostIndex.as_view(), name='index'),
+    path('', views.PostIndex, name='index'),
     path('post_create', views.PostCreate.as_view(), name='post_create'),
     path('post_detail/<int:pk>', views.PostDetail, name='post_detail'),
     path('post_update/<int:pk>', views.PostUpdate.as_view(), name='post_update'),
