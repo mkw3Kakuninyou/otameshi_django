@@ -102,13 +102,6 @@ class PostDelete(DeleteView):
         return resolve_url('myapp:index')
     
     
-""" class PostList(ListView):
-    model = Post
-    paginate_by = 20
-    
-    def get_queryset(self):
-        return Post.objects.all().order_by('-created_at') """
-
 #参考)https://djangobrothers.com/blogs/django_pagination/
 def PostList(request):
     if request.POST.get('order')=='投稿日-新しい順':
@@ -178,7 +171,7 @@ def Like_add(request, pk):
 class LikeList(LoginRequiredMixin, ListView):
     model = Post
     template_name = 'myapp/like_list.html'
-    paginate_by = 5
+    paginate_by = 20
     
     def get_queryset(self):
         return Like.objects.filter(user=self.request.user).order_by('-post') #Likeテーブルのuserカラムのデータで，現在ログインしているユーザーのid(詳細はUserテーブル(from django.contrib.auth.models import User))と一致するものを取得する．
@@ -262,33 +255,6 @@ def Search(request):
 
     else:
         return redirect('myapp:index')
-
-
-#参考)https://djangobrothers.com/blogs/django_pagination/
-def PostIndex(request):
-    if request.POST.get('order')=='投稿日-新しい順':
-        post_list = Post.objects.all().order_by('-created_at')
-    elif request.POST.get('order')=='投稿日-古い順':
-        post_list = Post.objects.all().order_by('created_at')
-    elif request.POST.get('order')=='更新日-新しい順':
-        post_list = Post.objects.all().order_by('-updated_at')
-    elif request.POST.get('order')=='更新日-古い順':
-        post_list = Post.objects.all().order_by('updated_at')
-    elif request.POST.get('order')=='カテゴリごと':
-        post_list = Post.objects.all().order_by('category')
-    elif request.POST.get('order')=='投稿者ごと':
-        post_list = Post.objects.all().order_by('author')
-    else:
-        post_list = Post.objects.all().order_by('-created_at')
-    
-    paginator = Paginator(post_list, 6)
-    p = request.GET.get('page')
-    post_list = paginator.get_page(p)
-    return render(request, 'myapp/index.html', {'page_obj': post_list}) #Keyの「page_obj」はpagination.html(どこかのサイトからお借りしたもの)に対応するようにしている．
-    
-
-
-
 
 
 class BBSCreate(LoginRequiredMixin, CreateView):
