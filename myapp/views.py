@@ -102,12 +102,38 @@ class PostDelete(DeleteView):
         return resolve_url('myapp:index')
     
     
-class PostList(ListView):
+""" class PostList(ListView):
     model = Post
     paginate_by = 20
     
     def get_queryset(self):
-        return Post.objects.all().order_by('-created_at')
+        return Post.objects.all().order_by('-created_at') """
+
+#参考)https://djangobrothers.com/blogs/django_pagination/
+def PostList(request):
+    if request.POST.get('order')=='投稿日-新しい順':
+        post_list = Post.objects.all().order_by('-created_at')
+    elif request.POST.get('order')=='投稿日-古い順':
+        post_list = Post.objects.all().order_by('created_at')
+    elif request.POST.get('order')=='更新日-新しい順':
+        post_list = Post.objects.all().order_by('-updated_at')
+    elif request.POST.get('order')=='更新日-古い順':
+        post_list = Post.objects.all().order_by('updated_at')
+    elif request.POST.get('order')=='カテゴリごと':
+        post_list = Post.objects.all().order_by('category')
+    elif request.POST.get('order')=='投稿者ごと':
+        post_list = Post.objects.all().order_by('author')
+    else:
+        post_list = Post.objects.all().order_by('-created_at')
+    
+    paginator = Paginator(post_list, 20)
+    p = request.GET.get('page')
+    post_list = paginator.get_page(p)
+    return render(request, 'myapp/post_list.html', {'page_obj': post_list}) #Keyの「page_obj」はpagination.html(どこかのサイトからお借りしたもの)に対応するようにしている．
+
+
+
+
 
 
 """

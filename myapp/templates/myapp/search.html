@@ -14,6 +14,7 @@
                 <tr>
                     <th>画像</th>
                     <th width="150px">タイトル</th>
+                    <th width="150px">投稿者</th>
                     <th width="150px">概要</th>
                     <th width="150px">内容</th>
                     <th width="200px">作成日時<br>更新日時</th>
@@ -25,9 +26,10 @@
                 <tr>
                     <td><img class="card-img-top" src="{{ item.thumbnail.url }}" alt="{{item.title}}"></td>
                     <td>{{ item.title }}</td>
+                    <td>{{ item.author }}</td>
                     <td>{{ item.description|safe|linebreaks|truncatechars_html:25 }}</td>
                     <td>{{ item.content|safe|linebreaks|truncatechars_html:25 }}</td>
-                    <td>{{ item.created_at }}<br>{{ item.updated_at }}</td>
+                    <td>{{ item.created_at.date }}<br>{{ item.updated_at.date }}</td>
                     <td><a class="btn btn-success" href="{% url 'myapp:post_detail' item.pk %}">移動</a></td>
                 </tr>
                 {% endfor %}

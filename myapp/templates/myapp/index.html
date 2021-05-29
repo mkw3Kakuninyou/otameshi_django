@@ -26,33 +26,13 @@
     </div>
 </div>
 
-<div class="container">
-    <div class='row'>
-        <div class='col-md-9'>
-            {% comment %} 参考)https://teratail.com/questions/339728 {% endcomment %}
-            <a class="btn btn-outline-dark dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">並替</a>
-            <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-                <form action='' method='POST'>
-                {% csrf_token %}
-                    <input type='submit' name='order' value='投稿日-新しい順'>
-                    <input type='submit' name='order' value='投稿日-古い順'>
-                    <input type='submit' name='order' value='更新日-新しい順'>
-                    <input type='submit' name='order' value='更新日-古い順'>
-                    <input type='submit' name='order' value='カテゴリごと'>
-                    <input type='submit' name='order' value='投稿者ごと'>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<br>
-
+{% include 'myapp/order.html' %}
 
 <div class="row">
     <div class="col-md-9">
         <!-- Card deck -->
         <div class="card-deck">
+        {% comment %} 以下の「page_obj」はpagination.html(どこかのサイトからお借りしたもの)に対応するようにしている． {% endcomment %}
             {% for item in page_obj %}
             <div class="col-md-4">
                 <!-- Card -->
