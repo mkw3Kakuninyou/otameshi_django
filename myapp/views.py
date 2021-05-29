@@ -132,10 +132,6 @@ def PostList(request):
     return render(request, 'myapp/post_list.html', {'page_obj': post_list}) #Keyの「page_obj」はpagination.html(どこかのサイトからお借りしたもの)に対応するようにしている．
 
 
-
-
-
-
 """
 ログインについては，settings.pyでも以下のように設定しなければならない．
 LOGIN_URL = 'myapp:login'
@@ -188,7 +184,7 @@ class LikeList(LoginRequiredMixin, ListView):
         return Like.objects.filter(user=self.request.user).order_by('-post') #Likeテーブルのuserカラムのデータで，現在ログインしているユーザーのid(詳細はUserテーブル(from django.contrib.auth.models import User))と一致するものを取得する．
 
 
-class Like_List_Delete(LoginRequiredMixin, DeleteView):
+class LikeListDelete(LoginRequiredMixin, DeleteView):
     template_name = 'myapp/like_list_delete.html'
     model = Like
     
@@ -239,14 +235,60 @@ def Search(request):
             freeword = searchform.cleaned_data['freeword'] #検索欄に入力された値を文字列化(消毒(サニタイズ))する．「freeword」はinputタグのnameの値である．
             search_list = Post.objects.filter(Q(title__icontains = freeword)|Q(content__icontains = freeword)|Q(description__icontains = freeword)).order_by('-created_at') #「カラム名__icontains = freename」は「そのカラムのデータでfreewordを含むもの」ということ．
             
-        params = {
-            'freeword': freeword,
-            'search_list': search_list,
-        }
-        
-        return render(request, 'myapp/search.html', params)
+            #参考)https://djangobrothers.com/blogs/django_pagination/
+            if request.POST.get('order')=='投稿日-新しい順':
+                post_list = search_list.order_by('-created_at')
+            elif request.POST.get('order')=='投稿日-古い順':
+                post_list = search_list.all().order_by('created_at')
+            elif request.POST.get('order')=='更新日-新しい順':
+                post_list = search_list.all().order_by('-updated_at')
+            elif request.POST.get('order')=='更新日-古い順':
+                post_list = search_list.all().order_by('updated_at')
+            elif request.POST.get('order')=='カテゴリごと':
+                post_list = search_list.all().order_by('category')
+            elif request.POST.get('order')=='投稿者ごと':
+                post_list = search_list.all().order_by('author')
+            else:
+                post_list = search_list.all().order_by('-created_at')
+            
+            paginator = Paginator(post_list, 6)
+            p = request.GET.get('page')
+            post_list = paginator.get_page(p)
+            search_context={
+                'page_obj': post_list,
+                'freeword': freeword,
+            }
+            return render(request, 'myapp/search.html', search_context) #Keyの「page_obj」はpagination.html(どこかのサイトからお借りしたもの)に対応するようにしている．
+
     else:
         return redirect('myapp:index')
+
+
+#参考)https://djangobrothers.com/blogs/django_pagination/
+def PostIndex(request):
+    if request.POST.get('order')=='投稿日-新しい順':
+        post_list = Post.objects.all().order_by('-created_at')
+    elif request.POST.get('order')=='投稿日-古い順':
+        post_list = Post.objects.all().order_by('created_at')
+    elif request.POST.get('order')=='更新日-新しい順':
+        post_list = Post.objects.all().order_by('-updated_at')
+    elif request.POST.get('order')=='更新日-古い順':
+        post_list = Post.objects.all().order_by('updated_at')
+    elif request.POST.get('order')=='カテゴリごと':
+        post_list = Post.objects.all().order_by('category')
+    elif request.POST.get('order')=='投稿者ごと':
+        post_list = Post.objects.all().order_by('author')
+    else:
+        post_list = Post.objects.all().order_by('-created_at')
+    
+    paginator = Paginator(post_list, 6)
+    p = request.GET.get('page')
+    post_list = paginator.get_page(p)
+    return render(request, 'myapp/index.html', {'page_obj': post_list}) #Keyの「page_obj」はpagination.html(どこかのサイトからお借りしたもの)に対応するようにしている．
+    
+
+
+
 
 
 class BBSCreate(LoginRequiredMixin, CreateView):

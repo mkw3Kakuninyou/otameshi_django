@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-md-8 offset-md-1">
+    <div class="col-md-9">
         <br>
         <h1>投稿一覧</h1>
         <table class="table">
@@ -12,16 +12,19 @@
                     <th width="200px">タイトル</th>
                     <th width="200px">投稿者</th>
                     <th width="200px">概要</th>
+                    <th width="200px">カテゴリ</th>
                     <th width="200px">作成日時<br>更新日時</th>
                     <th width="200px">リンク</th>
                 </tr>
             </thead>
             <tbody>
+                {% comment %} 以下の「page_obj」はpagination.html(どこかのサイトからお借りしたもの)に対応するようにしている． {% endcomment %}
                 {% for item in page_obj %}
                 <tr>
                     <td><a href="{% url 'myapp:post_detail' item.pk %}">{{ item.title }}</a></td>
                     <td>{{ item.author }}</td>
                     <td>{{ item.description|safe|truncatechars_html:30 }}</td>
+                    <td>{{ item.category }}
                     <td>{{ item.created_at.date }}
                         <br>
                         {{ item.updated_at.date }}</td>

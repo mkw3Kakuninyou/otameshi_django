@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-md-8 offset-md-1">
+    <div class="col-md-9">
         {% if like_list %}
             <br>
             <h1>お気に入り一覧</h1>
@@ -12,6 +12,7 @@
                     <tr>
                         <th width="150px">タイトル</th>
                         <th width="150px">投稿者</th>
+                        <th width="150px">カテゴリ</th>
                         <th width="150px">概要</th>
                         <th width="200px">作成日時<br>更新日時</th>
                         <th width="150px">リンク</th>
@@ -19,7 +20,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for item in like_list %}
+                    {% for item in page_obj %}
                     <tr>
                         <td>{{ item.post }}</td>
                         {% comment %}
@@ -28,6 +29,7 @@
                         Likeテーブルに登録されているPostテーブルの各カラムのデータを見ることができる．
                         {% endcomment %}
                         <td>{{ item.post.author }}</td>
+                        <td>{{ item.post.category }}</td>
                         <td>{{ item.post.description|safe|linebreaks|truncatechars_html:25 }}</td>
                         <td>{{ item.post.created_at.date }}
                             <br>

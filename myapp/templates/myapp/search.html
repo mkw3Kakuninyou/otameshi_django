@@ -2,19 +2,21 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-md-8 offset-md-1">
+    <div class="col-md-9">
         <br>
         <h2>「{{ freeword }}」の検索結果</h2>
-        {% if not search_list %}
+        {% include 'myapp/order.html' %}
+        {% comment %} 以下の「page_obj」はpagination.html(どこかのサイトからお借りしたもの)に対応するようにしている． {% endcomment %}
+        {% if not page_obj %}
         <br>
         <p>「{{ freeword }}」に関連する情報は存在しませんでした．</p>
         {% else %}
         <table class="table">
             <thead>
                 <tr>
-                    <th>画像</th>
                     <th width="150px">タイトル</th>
                     <th width="150px">投稿者</th>
+                    <th width="150px">カテゴリ</th>
                     <th width="150px">概要</th>
                     <th width="150px">内容</th>
                     <th width="200px">作成日時<br>更新日時</th>
@@ -22,11 +24,12 @@
                 </tr>
             </thead>
             <tbody>
-                {% for item in search_list %}
+                {% comment %} 以下の「page_obj」はpagination.html(どこかのサイトからお借りしたもの)に対応するようにしている． {% endcomment %}
+                {% for item in page_obj %}
                 <tr>
-                    <td><img class="card-img-top" src="{{ item.thumbnail.url }}" alt="{{item.title}}"></td>
                     <td>{{ item.title }}</td>
                     <td>{{ item.author }}</td>
+                    <td>{{ item.category }}</td>
                     <td>{{ item.description|safe|linebreaks|truncatechars_html:25 }}</td>
                     <td>{{ item.content|safe|linebreaks|truncatechars_html:25 }}</td>
                     <td>{{ item.created_at.date }}<br>{{ item.updated_at.date }}</td>
