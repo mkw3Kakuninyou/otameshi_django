@@ -11,28 +11,33 @@ from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.core.paginator import Paginator
+""" from django.core.paginator import Paginator """
 from django.shortcuts import render, get_object_or_404
 import os
 
 
-def PostIndex(request):
-    if request.POST.get('order')=='降順':
-        post_list = Post.objects.all().order_by('-created_at')
-    elif request.POST.get('order')=='昇順':
-        post_list = Post.objects.all().order_by('created_at')
-    elif request.POST.get('order')=='カテゴリ':
-        post_list = Post.objects.all().order_by('category')
-    elif request.POST.get('order')=='投稿者':
-        post_list = Post.objects.all().order_by('author')
-    else:
-        post_list = Post.objects.all().order_by('-created_at')
+class PostIndex(ListView):
+    model = Post
+    template_name = os.path.join('myapp','index.html')
+    paginate_by = 6
 
-    context = {
-        'post_list': post_list,
-    }
-    
-    return render(request, 'myapp/index.html', context)
+    def get_queryset(self):
+        if self.request.POST.get('order')=='投稿日-新しい順':
+            post_list = Post.objects.all().order_by('-created_at')
+        elif self.request.POST.get('order')=='投稿日-古い順':
+            post_list = Post.objects.all().order_by('created_at')
+        elif self.request.POST.get('order')=='更新日-新しい順':
+            post_list = Post.objects.all().order_by('-updated_at')
+        elif self.request.POST.get('order')=='更新日-古い順':
+            post_list = Post.objects.all().order_by('updated_at')
+        elif self.request.POST.get('order')=='カテゴリごと':
+            post_list = Post.objects.all().order_by('category')
+        elif self.request.POST.get('order')=='投稿者ごと':
+            post_list = Post.objects.all().order_by('author')
+        else:
+            post_list = Post.objects.all().order_by('-created_at')
+        
+        return post_list
     
 
 class PostCreate(LoginRequiredMixin, CreateView):
@@ -179,15 +184,15 @@ class CategoryDetail(DetailView):
     slug_url_kwarg = 'name_en'
     
     def get_context_data(self, *args, **kwargs):
-        detail_data = Category.objects.get(name_en = self.kwargs['name_en']) #objects.getはデータを1つだけ取得する(objects.filterにすると'QuerySet' object has no attribute 'id'になる)
+        detail_data = Category.objects.get(name_en = self.kwargs['name_en']) #objects.getはデータを1つだけ取得する．self.kwargs['name_en']はurls.pyのpath('category_detail/<str:name_en>(省略))である．
         category_posts = Post.objects.filter(category = detail_data.id).order_by('-created_at')
         
-        params = {
+        context = {
             'object': detail_data,
             'category_posts': category_posts,
         }
         
-        return params
+        return context
 
 
 class CategoryCreate(LoginRequiredMixin, CreateView):
