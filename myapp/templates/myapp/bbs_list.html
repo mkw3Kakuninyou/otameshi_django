@@ -1,0 +1,39 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+{% if request.user.is_superuser %}
+<div class="row">
+    <div class="col-md-8 offset-md-1">
+        <br>
+        <h1>掲示一覧</h1>
+        <a class='btn btn-info' href="{% url 'myapp:bbs_create' %}">掲示を作成する</a>
+        <br>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th width='200px'>掲示の内容</th>
+                    <th width='150px'>編集</th>
+                    <th width='150px'>削除</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in bbs_list %}
+                <tr>
+                    <td>{{ item.bbscontent|truncatechars_html:10 }}</td>
+                    <td><a class='btn btn-success' href="{% url 'myapp:bbs_update' item.id %}">編集</a></td>
+                    <td><a class='btn btn-danger' href="{% url 'myapp:bbs_delete' item.id %}">削除</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br>
+        {% include 'myapp/pagination.html' %}
+        <br>
+    </div>
+</div>
+{% else %}
+<br>
+<p>このページは管理ユーザー専用です．</p>
+<br>
+{% endif %}
+{% endblock %}

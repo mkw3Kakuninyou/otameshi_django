@@ -1,0 +1,86 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<!-- Start your project here-->
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        {% if request.user.is_authenticated %}
+            <p>{{ request.user }}さん．こにゃにゃちわんこそば🐾</p>
+        {% else %}
+            <p>お客さん．こにゃにゃちわんこそば🐾</p>
+        {% endif %}
+        <br>
+        {% comment %} 「layout」はcontext_processors.pyのLayoutList関数の辞書型データのキーである． {% endcomment %}
+        <h1 class="display-4">{{ layout.home_top_title }}</h1>
+        <h2 class="display-8">{{ layout.home_sub_title }}</2>
+    </div>
+    <div class="container">
+        <br>
+        <p>本日は{{ today }}です．</p>
+        {% comment %} 「registered_users」はcontext_processors.pyのIndex関数の辞書型データのキーである． {% endcomment %}
+        <p>ユーザー登録者数は{{ registered_users }}人です．</p>
+        {% comment %} 「bbs」はcontext_processors.pyのIndex関数の辞書型データのキーである． {% endcomment %}
+        {% for item in bbs %}
+            <p>💩{{ item.bbscontent }}</P>
+        {% endfor %}
+    </div>
+</div>
+
+{% include 'myapp/order.html' %}
+
+<div class="row">
+    <div class="col-md-9">
+        <!-- Card deck -->
+        <div class="card-deck">
+        {% comment %} 以下の「page_obj」はpagination.html(どこかのサイトからお借りしたもの)に対応するようにしている． {% endcomment %}
+            {% for item in page_obj %}
+            <div class="col-md-4">
+                <!-- Card -->
+                <div class="card mb-4">
+
+                    <!--Card image-->
+                    <div class="view overlay">
+                        {% if item.thumbnail %}
+                        <img class="card-img-top" src="{{ item.thumbnail.url }}"
+                        alt="{{item.title}}">
+                        {% else %}
+                        <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Others/images/16.jpg"
+                            alt="{{item.title}}">
+                        {% endif %}
+                        <a href="{% url 'myapp:post_detail' item.id %}">
+                            <div class="mask rgba-white-slight"></div>
+                        </a>
+                    </div>
+
+                    <!--Card content-->
+                    <div class="card-body">
+
+                        <!--Title-->
+                        <h4 class="card-title">【{{ item.title }}】</h4>
+                        <p>(投稿者：{{ item.author }})</p>
+                        <p>(閲覧数：{{ item.views }})</p>
+                        <p>(カテゴリ：{{ item.category }})</p>
+                        <!--Text-->
+                        <p class="card-text">{{item.description|safe|linebreaks|truncatechars_html:30}}</p>
+                        <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
+                        <a href="{% url 'myapp:post_detail' item.id %}" type="button" class="btn btn-light-blue btn-md">詳細へ</a>
+                        <div class="card-footer text-muted text-center mt-4">
+                            <small>by&nbsp;{{ item.author }}<br>💩投稿日{{ item.created_at.date }}<br>💩更新日{{ item.updated_at.date }}
+                            <br>💩お気に入りへ登録した<br>ユーザー数</small>
+                            <br>
+                            {% comment %} 「like_count」はmodels.pyのPostクラスのlike_countメソッドである． {% endcomment %}
+                            <i class="fas fa-heart" style='color:pink;'></i>&nbsp;{{ item.like_count }}
+                        </div>
+                    </div>
+                </div>
+                <!-- Card -->
+            </div>
+            {% endfor %}
+        </div>
+        <!-- Card deck -->
+    </div>
+</div>
+<br>
+{% include 'myapp/pagination.html' %}
+<br>
+{% endblock %}

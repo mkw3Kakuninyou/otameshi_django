@@ -1,0 +1,37 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+{% if request.user.is_superuser %}
+<div class="row">
+    <div class="col-md-8 offset-md-1">
+        <br>
+        <h1>ページレイアウト</h1>
+        {% if not layout %}
+        <a class='btn btn-info' href="{% url 'myapp:layout_create' %}">ページレイアウトを作成する</a>
+        {% else %}
+        <br>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th width='200px'>トップタイトル</th>
+                    <th width='150px'>サブタイトル</th>
+                    <th width='150px'>編集</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ layout.home_top_title }}</td>
+                    <td>{{ layout.home_sub_title }}</td>
+                    <td><a class='btn btn-success' href="{% url 'myapp:layout_update' layout.id %}">編集</a></td>
+                </tr>
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+</div>
+{% else %}
+<br>
+<p>このページは管理ユーザー専用です．</p>
+<br>
+{% endif %}
+{% endblock %}

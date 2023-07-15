@@ -1,0 +1,41 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-9">
+        <br>
+        <h1>投稿一覧</h1>
+        <table class="table">
+            {% include 'myapp/order.html' %}
+            <thead>
+                <tr>
+                    <th width="200px">タイトル</th>
+                    <th width="200px">投稿者</th>
+                    <th width="200px">概要</th>
+                    <th width="200px">カテゴリ</th>
+                    <th width="200px">作成日時<br>更新日時</th>
+                    <th width="200px">リンク</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% comment %} 以下の「page_obj」はpagination.html(どこかのサイトからお借りしたもの)に対応するようにしている． {% endcomment %}
+                {% for item in page_obj %}
+                <tr>
+                    <td><a href="{% url 'myapp:post_detail' item.pk %}">{{ item.title }}</a></td>
+                    <td>{{ item.author }}</td>
+                    <td>{{ item.description|safe|truncatechars_html:30 }}</td>
+                    <td>{{ item.category }}
+                    <td>{{ item.created_at.date }}
+                        <br>
+                        {{ item.updated_at.date }}</td>
+                    <td><a class="btn btn-success" href="{% url 'myapp:post_detail' item.pk %}">移動</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br>
+        {% include 'myapp/pagination.html' %}
+        <br>
+    </div>
+</div>
+{% endblock %}
