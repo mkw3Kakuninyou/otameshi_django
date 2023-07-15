@@ -55,6 +55,7 @@ class SEO(models.Model):
     meta_description = models.CharField(verbose_name='metaタグ(name="description")', max_length=120)
     meta_prop_ogTitle = models.CharField(verbose_name='metaタグ(property="og:title")', max_length=30)
     meta_prop_ogImage = models.ImageField(verbose_name='metaタグ(property="og:image")', upload_to='images/', blank=True)
+<<<<<<< HEAD
     meta_prop_ogWidth = models.PositiveSmallIntegerField(verbose_name='metaタグ(property="og:image:width")')
     meta_prop_ogHeight = models.PositiveSmallIntegerField(verbose_name='metaタグ(property="og:image:height")')
     meta_prop_ogDescription = models.CharField(verbose_name='metaタグ(property="og:description")', max_length=120)
@@ -63,9 +64,23 @@ class SEO(models.Model):
     meta_twi_imgSrc = models.ImageField(verbose_name='metaタグ(name="twitter:image:src")', upload_to='images/', blank=True)
     meta_twi_title = models.CharField(verbose_name='metaタグ(name="twitter:title")', max_length=120)
     page_title = models.CharField(verbose_name='ページタイトル', max_length=25)
+=======
+    meta_prop_ogWidth = models.PositiveSmallIntegerField(verbose_name='metaタグ(property="og:image:width")', blank=True)
+    meta_prop_ogHeight = models.PositiveSmallIntegerField(verbose_name='metaタグ(property="og:image:height")', blank=True)
+    meta_prop_ogDescription = models.CharField(verbose_name='metaタグ(property="og:description")', max_length=120, blank=True)
+    meta_prop_ogSiteName = models.CharField(verbose_name='metaタグ(property="og:site_name")', max_length=30, blank=True)
+    meta_prop_ogUrl = models.URLField(verbose_name='metaタグ(property="og:url")', blank=True)
+    meta_twi_imgSrc = models.ImageField(verbose_name='metaタグ(name="twitter:image:src")', upload_to='images/', blank=True)
+    meta_twi_title = models.CharField(verbose_name='metaタグ(name="twitter:title")', max_length=120, blank=True)
+    page_title = models.CharField(verbose_name='ページタイトル', max_length=25, blank=True)
+>>>>>>> refs/remotes/origin/main
     
 
 class Layout(models.Model):
     home_top_title = models.CharField(verbose_name='トップタイトル', max_length=25)
+<<<<<<< HEAD
     home_sub_title = models.CharField(verbose_name='サブタイトル', max_length=25)
+=======
+    home_sub_title = models.CharField(verbose_name='サブタイトル', max_length=25, blank=True)
+>>>>>>> refs/remotes/origin/main
     

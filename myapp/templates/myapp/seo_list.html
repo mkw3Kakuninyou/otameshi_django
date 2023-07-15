@@ -8,7 +8,11 @@
         <h1>SEO設定</h1>
         {% if not seo %}
         <a class='btn btn-info' href="{% url 'myapp:seo_create' %}">SEOを作成する</a>
+<<<<<<< HEAD
         {% endif %}
+=======
+        {% else %}
+>>>>>>> refs/remotes/origin/main
         <br>
             <p><a class='btn btn-success' href="{% url 'myapp:seo_update' seo.id %}">編集</a></p>
             <p>meta_keywords --> {{ seo.meta_keywords }}</p>
@@ -24,6 +28,10 @@
             <p>meta_twi_title --> {{ seo.meta_twi_title }}</p>
             <p>title --> {{ seo.page_title }}</p>
         <br>
+<<<<<<< HEAD
+=======
+        {% endif %}
+>>>>>>> refs/remotes/origin/main
         {% include 'myapp/pagination.html' %}
         <br>
     </div>
