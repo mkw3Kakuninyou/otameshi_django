@@ -16,10 +16,7 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-<<<<<<< HEAD
-=======
 DEFAULT_AUTO_FIELD='django.db.models.AutoField'
->>>>>>> refs/remotes/origin/main
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -157,14 +154,6 @@ LOGIN_REDIRECT_URL = 'myapp:index'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-<<<<<<< HEAD
-
-# Herokuデプロイ用
-import dj_database_url
-DATABASES['default'] = dj_database_url.config()
-
-=======
->>>>>>> refs/remotes/origin/main
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FOWARDED_PROTO', 'https')
 
 ALLOWED_HOSTS = ['*']
@@ -175,26 +164,20 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 DEBUG = False
 
-<<<<<<< HEAD
-=======
 #ローカル環境での設定をlocal_settings.pyで行っている
 #.gitignorによってgithubにはアップロードしないようになっている
->>>>>>> refs/remotes/origin/main
 try:
     from .local_settings import *
 except ImportError:
     pass
 
 if not DEBUG:
-<<<<<<< HEAD
-=======
 
     #Herokuデプロイ用（ローカルで実行する場合は以下2行をコメントアウトする）
     import dj_database_url
     DATABASES['default'] = dj_database_url.config()
 
     #os.environ[～]の～は、Heroku上で設定する
->>>>>>> refs/remotes/origin/main
     SECRET_KEY = os.environ['SECRET_KEY']
     AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
     AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
@@ -209,9 +192,4 @@ if not DEBUG:
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     MEDIA_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
     AWS_S3_FILE_OVERWRITE = False
-<<<<<<< HEAD
     AWS_DEFAULT_ACL = 'public-read'
-
-=======
-    AWS_DEFAULT_ACL = 'public-read'
->>>>>>> refs/remotes/origin/main
