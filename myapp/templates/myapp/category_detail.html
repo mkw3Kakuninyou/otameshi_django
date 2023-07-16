@@ -8,7 +8,7 @@
         <hr>
         <ul class="list-group">
             {% for item in category_posts %}
-            <li class="list-group-item"><a href="{% url 'myapp:post_detail' item.id %}">{{ item.title }}</a></li>
+            <li class="list-group-item"><a href="{% url 'myapp:post_detail' item.id %}">【{{ item.title }}】&emsp;投稿日{{ item.created_at }}&emsp;更新日{{ item.updated_at }}</a></li>
             {% endfor %}
         </ul> 
         <br>

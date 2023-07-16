@@ -6,7 +6,7 @@
         <form method="POST">
         {% csrf_token %}
             <br><br>
-            <h1>以下の投稿をお気に入りから削除しますか？<a href="/" onclick="window.history.back();" class="btn btn-outline-dark">戻る</a>
+            <h1>以下の投稿をお気に入りから削除しますか？<a href="{{request.META.HTTP_REFERER}}" class="btn btn-outline-dark">戻る</a>
                 <button  class="btn btn-danger" type="submit" value="削除">削除する</button></h1>
             <br>
             <div class="row">
