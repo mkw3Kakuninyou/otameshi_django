@@ -34,7 +34,7 @@
             <a class="btn" href="{% url 'myapp:like_add' object.pk %}" style="background-color:#FF6699; color:white;">お気に入りに登録する</a>
             <hr>
             {% else %}
-            <a class="btn" href="{% url 'myapp:like_add' object.pk %}" style="background-color:#00FF00; color:white;" pointer-events:none>お気に入りに登録済み</a>
+            <a class="btn" href="{% url 'myapp:like_list_delete' like_delete.id %}" style="background-color:#00FF00; color:white;" pointer-events:none>お気に入り登録済み</a>
             <hr>
             {% endif %}
             <a href="/" onclick="window.history.back();" class="btn btn-outline-dark">戻る</a>

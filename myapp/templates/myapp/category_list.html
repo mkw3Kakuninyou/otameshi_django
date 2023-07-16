@@ -11,14 +11,14 @@
                 <br>
                 <div class="card">
                     <div class="card-body">
-                        <h2 class="card-title"><a href="{% url 'myapp:category_detail' category.name_en %}">{{ category.name }}</a>&nbsp;<small>[{{ category.post_count }}]</small></h2>
+                        <h2 class="card-title"><a href="{% url 'myapp:category_detail' category.name %}">{{ category.name }}</a>&nbsp;<small>[{{ category.post_count }}]</small></h2>
                         <hr>
                         {% comment %} 「category.post_set.all」でPostテーブルのcategoryカラム(Categoryテーブルを参照している)のデータごとに分類する． {% endcomment %}
                         {% for post in category.post_set.all|slice:":5" %}
                         <p><a href="{% url 'myapp:post_detail' post.id %}">○{{ post.title }}</a><p>
                         {% endfor %}
                         <br>
-                        <a href="{% url 'myapp:category_detail' category.name_en %}">このカテゴリの記事を全て見る</a>
+                        <a href="{% url 'myapp:category_detail' category.name %}">このカテゴリの記事を全て見る</a>
                     </div>
                 </div>
             </div>

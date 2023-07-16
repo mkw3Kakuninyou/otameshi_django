@@ -96,7 +96,7 @@
                             aria-haspopup="true" aria-expanded="false">カテゴリ</a>
                         <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
                             {% for item in category_list %} {% comment %} 「category_list」はcontext.processors.pyのAll_Category関数を参照． {% endcomment %}
-                            <a class="dropdown-item" href="{% url 'myapp:category_detail' item.name_en %}">{{ item.name }}</a>
+                            <a class="dropdown-item" href="{% url 'myapp:category_detail' item.name %}">{{ item.name }}</a>
                             {% endfor %}
                             <hr>
                             <a class="dropdown-item" href="{% url 'myapp:category_list' %}">カテゴリ一覧</a>

@@ -58,7 +58,8 @@ class PostCreate(LoginRequiredMixin, CreateView):
 def PostDetail(request, pk):
     detail_data = Post.objects.get(pk = pk)
     category_posts = Post.objects.filter(category = detail_data.category).order_by('-created_at')[:5] #現在参照している記事と同じカテゴリの記事を表示させる
-    
+    like_delete = Like.objects.filter(post_id = pk).first() #お気に入り削除用（「Postテーブルのid = Likeテーブルのpost_id」となるデータの主キーを取得する）    
+
     views_count = get_object_or_404(Post, id = pk) #記事が参照された回数を数える
     views_count.views += 1
     views_count.save() 
@@ -67,6 +68,7 @@ def PostDetail(request, pk):
         is_like = Like.objects.values_list('post', flat=True).filter(user=request.user) #values_listは特定のカラム(ここではpost)の値をリストで取得する．
         logged_in_params = {
             'is_like': is_like,
+            'like_delete': like_delete,
             'object': detail_data,
             'category_posts': category_posts,
             'pk': pk,
@@ -163,9 +165,6 @@ def Like_add(request, pk):
         like.save()
         messages.success(request, 'お気に入りに登録しました！') #base.htmlの{{ if messages }}以下の箇所に対応
         return redirect('myapp:post_detail', pk)
-    else:
-        messages.info(request, 'すでにお気に入りに登録済みです。') #base.htmlの{{ if messages }}以下の箇所に対応
-        return redirect('myapp:post_detail', pk)
 
 
 class LikeList(LoginRequiredMixin, ListView):
@@ -194,11 +193,11 @@ class CategoryList(ListView):
     
 class CategoryDetail(DetailView):
     model = Category
-    slug_field = 'name_en'
-    slug_url_kwarg = 'name_en'
+    slug_field = 'name'
+    slug_url_kwarg = 'name'
     
     def get_context_data(self, *args, **kwargs):
-        detail_data = Category.objects.get(name_en = self.kwargs['name_en']) #objects.getはデータを1つだけ取得する．self.kwargs['name_en']はurls.pyのpath('category_detail/<str:name_en>(省略))である．
+        detail_data = Category.objects.get(name = self.kwargs['name']) #objects.getはデータを1つだけ取得する．self.kwargs['name_en']はurls.pyのpath('category_detail/<str:name_en>(省略))である．
         category_posts = Post.objects.filter(category = detail_data.id).order_by('-created_at')
         
         context = {

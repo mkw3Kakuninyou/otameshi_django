@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 
 class Category(models.Model):
     name = models.CharField('カテゴリ名', max_length=50)
-    name_en = models.CharField('カテゴリ名英語', max_length=10)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -21,7 +20,7 @@ class Post(models.Model):
     title = models.CharField('タイトル', max_length=50)
     description = models.TextField('概要', max_length=100)
     content = models.TextField('内容', max_length=10000, blank=True, null=False)
-    category = models.ForeignKey('Category', on_delete=models.PROTECT)
+    category = models.ForeignKey('Category', on_delete=models.PROTECT, blank=True, null=True)
     thumbnail = models.ImageField(upload_to='images/', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
