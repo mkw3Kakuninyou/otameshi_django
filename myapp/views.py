@@ -57,7 +57,7 @@ class PostCreate(LoginRequiredMixin, CreateView):
 
 def PostDetail(request, pk):
     detail_data = Post.objects.get(pk = pk)
-    category_posts = Post.objects.filter(category = detail_data.category).order_by('-created_at')[:5] #現在参照している記事と同じカテゴリの記事を表示させる
+    category_posts = Post.objects.filter(~Q(id=pk), category = detail_data.category).order_by('-created_at')[:5] #現在参照している記事と同じカテゴリの記事を表示させる（~Q(id=pk)で自分の記事がここに表示されないようにする）
     like_delete = Like.objects.filter(post_id = pk).first() #お気に入り削除用（「Postテーブルのid = Likeテーブルのpost_id」となるデータの主キーを取得する）    
 
     views_count = get_object_or_404(Post, id = pk) #記事が参照された回数を数える
