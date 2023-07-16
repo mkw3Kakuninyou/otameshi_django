@@ -37,7 +37,7 @@
             <a class="btn" href="{% url 'myapp:like_list_delete' like_delete.id %}" style="background-color:#00FF00; color:white;" pointer-events:none>お気に入り登録済み</a>
             <hr>
             {% endif %}
-            <a href="/" onclick="window.history.back();" class="btn btn-outline-dark">戻る</a>
+            <button class="btn btn-outline-dark" onclick="window.history.back();" >戻る</button>
             <hr>
             <br>
             {% with prev=object.get_previous_by_created_at %}
