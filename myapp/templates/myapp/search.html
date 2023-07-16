@@ -5,7 +5,6 @@
     <div class="col-md-9">
         <br>
         <h2>「{{ freeword }}」の検索結果</h2>
-        {% include 'myapp/order.html' %}
         {% comment %} 以下の「page_obj」はpagination.html(どこかのサイトからお借りしたもの)に対応するようにしている． {% endcomment %}
         {% if not page_obj %}
         <br>

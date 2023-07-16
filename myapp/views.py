@@ -226,23 +226,7 @@ def Search(request):
         if searchform.is_valid():
             freeword = searchform.cleaned_data['freeword'] #検索欄に入力された値を文字列化(消毒(サニタイズ))する．「freeword」はinputタグのnameの値である．
             search_list = Post.objects.filter(Q(title__icontains = freeword)|Q(content__icontains = freeword)|Q(description__icontains = freeword)).order_by('-created_at') #「カラム名__icontains = freename」は「そのカラムのデータでfreewordを含むもの」ということ．
-            
-            #参考)https://djangobrothers.com/blogs/django_pagination/
-            if request.POST.get('order')=='投稿日-新しい順':
-                post_list = search_list.order_by('-created_at')
-            elif request.POST.get('order')=='投稿日-古い順':
-                post_list = search_list.all().order_by('created_at')
-            elif request.POST.get('order')=='更新日-新しい順':
-                post_list = search_list.all().order_by('-updated_at')
-            elif request.POST.get('order')=='更新日-古い順':
-                post_list = search_list.all().order_by('updated_at')
-            elif request.POST.get('order')=='カテゴリごと':
-                post_list = search_list.all().order_by('category')
-            elif request.POST.get('order')=='投稿者ごと':
-                post_list = search_list.all().order_by('author')
-            else:
-                post_list = search_list.all().order_by('-created_at')
-            
+            post_list = search_list.order_by('-created_at')
             paginator = Paginator(post_list, 6)
             p = request.GET.get('page')
             post_list = paginator.get_page(p)
